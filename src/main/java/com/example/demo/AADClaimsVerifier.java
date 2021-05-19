@@ -21,9 +21,6 @@ public class AADClaimsVerifier implements JwtClaimsSetVerifier {
     private Map<String, Object> claims;
 
     public AADClaimsVerifier(final String[] aadAliases, final String[] acceptedTenants, final String applicationId) {
-        // In production, you'd want to get a valid list of issuers from:
-        // https://login.microsoftonline.com/common/discovery/instance?authorization_endpoint=https://login.microsoftonline.com/common/oauth2/v2.0/authorize&api-version=1.1
-        // You must get all the values under the metadata[].aliases[] properties.
 
         Assert.notEmpty(aadAliases, "aadAliases cannot be empty");
         for (final String issuer : aadAliases) {
@@ -64,6 +61,7 @@ public class AADClaimsVerifier implements JwtClaimsSetVerifier {
             throw new InvalidTokenException("Invalid Issuer (iss) claim: " + jwtIssuer);
         }
 
+        // Accepted tenant ID
         final String jwtAud = (String) claims.get(AUD_CLAIM);
         if (!jwtAud.equals(applicationId) && !jwtAud.equals( V1_AUD_PREFIX + applicationId)) {
             throw new InvalidTokenException("Invalid Audience (aud) claim: " + jwtAud);

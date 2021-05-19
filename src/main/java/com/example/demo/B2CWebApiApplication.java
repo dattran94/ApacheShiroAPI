@@ -36,25 +36,16 @@ public class B2CWebApiApplication {
     return registrationBean;
   }
 
-//  @Bean
-//  public ShiroFilterFactoryBean shiroFilter() {
-//    ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
-//    factoryBean.setSecurityManager(securityManager());
-//    return factoryBean;
-//  }
-
   @Bean(name = "securityManager")
   public DefaultWebSecurityManager securityManager() {
     final DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
     securityManager.setRealm(realm());
-    // securityManager.setSessionManager(sessionManager());
     return securityManager;
   }
 
   @Bean(name = "realm")
   public B2CMyCustomRealm realm() {
     final B2CMyCustomRealm realm = new B2CMyCustomRealm();
-    // realm.setCredentialsMatcher(credentialsMatcher());
     return realm;
   }
 }

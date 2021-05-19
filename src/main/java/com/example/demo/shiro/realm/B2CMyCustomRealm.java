@@ -24,9 +24,9 @@ public class B2CMyCustomRealm extends AuthorizingRealm {
 
   @Autowired
   JwtClaimsSetVerifier claimSetVerifier;
-  
+
   private AADClaimsVerifier aADClaimsVerifier;
-  
+
   public B2CMyCustomRealm() {
     super();
   }
@@ -57,43 +57,14 @@ public class B2CMyCustomRealm extends AuthorizingRealm {
     }
 
     aADClaimsVerifier = (AADClaimsVerifier) claimSetVerifier;
-    System.out.println(aADClaimsVerifier.getClaims());
-    
     Map<String, Object> claims = aADClaimsVerifier.getClaims();
     UserInfoTest userInfoTest = new UserInfoTest();
     userInfoTest.setName((String) claims.get("name"));
     userInfoTest.setScp((String) claims.get("scp"));
-    
-    // UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
-    // String username = usernamePasswordToken.getUsername();
-    // char[] password = usernamePasswordToken.getPassword();
-    // try {
-    // this.authenticationContext.acquireToken(this.config.getGraphResource(),
-    // this.config.getAuthenticationClientId(), username + '@' + this.config.getTenant(), escape(new
-    // String(password)), null).get();
-    // } catch (InterruptedException | ExecutionException e) {
-    // if (e.getCause() instanceof com.microsoft.aad.adal4j.AuthenticationException) {
-    // // Invalid username or password
-    // return null;
-    // }
-    // throw new AuthenticationException("Error accessing authentication service", e);
-    // }
 
-    // SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(username,
-    // password, getName());
+    SimpleAuthenticationInfo authenticationInfo =
+        new SimpleAuthenticationInfo(userInfoTest, token.getCredentials(), getName());
 
-    // String username = "ttdat194@gmail.com";
-    // char[] password = new char[4];
-    // password[0] = 'a';
-    // password[1] = 'b';
-    // password[2] = 'c';
-    // password[3] = 'd';
-    
-//    SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-//        authentication.getPrincipal(), authentication.getCredentials(), authentication.getName());
-    SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-        userInfoTest, token.getCredentials(), getName());
-    
     return authenticationInfo;
   }
 
